@@ -1,6 +1,7 @@
 // 과제 조건
 // 1. Member, Dinner interface 만들고 타입 지정하기
 // 2. organize 내부 로직 채우기
+
 export{};
 
 //Member interface

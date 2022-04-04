@@ -3,7 +3,7 @@
 // 증감 연산자
 // let a = 2;
 // let b = a++; -> b = a + 1
-let B = ++a;  // -> b = a + 1
+let B = ++a;  // -> B = a + 1
 
 console.log(B);
 
