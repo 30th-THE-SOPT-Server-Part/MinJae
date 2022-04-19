@@ -1,6 +1,4 @@
 import express, {Request, Response, Router} from 'express';
-import { appendFile } from 'fs';
-import { request } from 'http';
 
 const router: Router = express.Router(); 
 
