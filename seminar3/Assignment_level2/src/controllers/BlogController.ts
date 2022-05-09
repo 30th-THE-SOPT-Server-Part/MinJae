@@ -6,7 +6,6 @@ import { BlogCreateDto } from "../interfaces/blog/BlogCreateDto";
 import { PostBaseReponseDto } from "../interfaces/common/PostBaseResponseDto";
 import { BlogService } from "../services";
 import { BlogUpdateDto } from "../interfaces/blog/BlogUpdateDto";
-import Blog from "../models/Blog";
 
 
 /**
@@ -31,9 +30,10 @@ const createBlog = async (req: Request, res: Response): Promise<void> => {
 /**
  *  @route PUT /blog/:blogId
  *  @desc Update Blog
- *  @access Public
+  *  @access Public
  */
-const updateBlog = async (req: Request, res: Response) => {
+
+const updateBlog = async (req: Request, res: Response): Promise<void> => {
     const blogUpdateDto: BlogUpdateDto = req.body;
     const { blogId } = req.params;
 
@@ -52,17 +52,17 @@ const updateBlog = async (req: Request, res: Response) => {
  *  @desc READ Blog
  *  @access Public
  */
-const findBlogById = async(req: Request, res: Response) => {
+const findBlogById = async(req: Request, res: Response): Promise<void> => {
     const { blogId } = req.params;
 
     try{
         const data = await BlogService.findBlogById(blogId);
 
         if(!data){
-            return res.status(statusCode.NO_CONTENT).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+            res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
         }
 
-        return res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_BLOG_SUCCESS, data));
+            res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_BLOG_SUCCESS, data));
     } catch (error) {
         console.log(error);
         res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
@@ -75,7 +75,7 @@ const findBlogById = async(req: Request, res: Response) => {
  *  @access Public
  */
 
-const deleteBlog = async ( req: Request, res: Response) => {
+const deleteBlog = async ( req: Request, res: Response) : Promise<void> => {
     const { blogId } = req.params;
 
     try{

@@ -17,7 +17,7 @@ const createUser = async (req: Request, res: Response): Promise<void> => {
 
     try {
         const data: PostBaseReponseDto = await UserService.createUser(userCreateDto);
-
+        
         res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.CREATE_USER_SUCCESS, data));
     
     }catch (error) {

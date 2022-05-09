@@ -29,7 +29,7 @@ const createBlog = async (blogCreateDto: BlogCreateDto): Promise<PostBaseReponse
 
 }
 
-const updateBlog = async (blogId: string, blogUpdateDto: BlogUpdateDto) => {
+const updateBlog = async (blogId: string, blogUpdateDto: BlogUpdateDto) : Promise<void> => {
     try{
         await Blog.findByIdAndUpdate(blogId, blogUpdateDto);
 
@@ -54,7 +54,7 @@ const findBlogById = async ( blogId: string ): Promise<BlogResponseDto | null>=>
     }
 }
 
-const deleteBlog = async ( blogId: string) => {
+const deleteBlog = async ( blogId: string ): Promise<void> => {
     try{
         await Blog.findByIdAndDelete(blogId);
 
