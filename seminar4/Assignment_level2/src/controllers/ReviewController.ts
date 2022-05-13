@@ -18,7 +18,7 @@ const createReview = async (req: Request, res: Response) => {
     try {
         const data = await ReviewService.createReview(movieId, reviewCreateDto);
 
-        res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.CREATE_REVIEW_SUCCESS))
+        res.status(statusCode.CREATED).send(util.success(statusCode.CREATED, message.CREATE_REVIEW_SUCCESS));
 
     } catch (error) {
         console.log(error);
@@ -38,7 +38,8 @@ const getReviews = async (req: Request, res: Response) => {
         res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
     }
 }
+
 export default {
     createReview,
-    getReviews
+    getReviews,
 }

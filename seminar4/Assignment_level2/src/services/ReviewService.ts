@@ -1,6 +1,8 @@
 import { PostBaseReponseDto } from "../interfaces/common/PostBaseResponseDto";
+import { MovieUpdateDto } from "../interfaces/movie/MovieUpdateDto";
 import { ReviewCreateDto } from "../interfaces/review/ReviewCreateDto";
 import { ReviewResponseDto } from "../interfaces/review/ReviewResponseDto";
+import Movie from "../models/Movie";
 import Review from "../models/Review";
 
 const createReview = async (movieId: string, reviewCreateDto: ReviewCreateDto): Promise<PostBaseReponseDto> => {
@@ -48,6 +50,7 @@ const getReviews = async (movieId: string): Promise<ReviewResponseDto[]> => {
         throw error;
     }
 }
+
 export default {
     createReview,
     getReviews

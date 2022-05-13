@@ -3,7 +3,7 @@ import { UserCreateDto } from "../interfaces/user/UserCreateDto";
 import statusCode from "../modules/statusCode";
 import message from "../modules/responseMessage";
 import util from "../modules/util";
-import { UserService } from "../services";
+import UserService from "../services/UserService";
 import { UserUpdateDto } from "../interfaces/user/UserUpdateDto";
 import { PostBaseReponseDto } from "../interfaces/common/PostBaseResponseDto";
 const { validationResult } = require('express-validator');
@@ -20,7 +20,7 @@ const createUser = async (req: Request, res: Response): Promise<void | Response>
         return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
     }
 
-    const userCreateDto: UserCreateDto = req.body;
+    const userCreateDto: UserCreateDto = req.body; // UserCreateDto로 req.body 받아옴
     try {
         const data: PostBaseReponseDto = await UserService.createUser(userCreateDto);
         
@@ -37,7 +37,7 @@ const createUser = async (req: Request, res: Response): Promise<void | Response>
  *  @desc Update User
  *  @access Public
  */
-const updateUser = async (req: Request, res: Response) => {
+const updateUser = async (req: Request, res: Response) : Promise<void> => {
     const userUpdateDto: UserUpdateDto = req.body;
     const { userId } = req.params;
     
@@ -56,7 +56,7 @@ const updateUser = async (req: Request, res: Response) => {
  *  @desc READ User
  *  @access Public
  */
-const findUserById = async(req: Request, res: Response) => {
+const findUserById = async(req: Request, res: Response): Promise<void | Response> => {
     const { userId } = req.params;
 
     try {
@@ -66,7 +66,7 @@ const findUserById = async(req: Request, res: Response) => {
             return res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
         }
 
-        return res.status(statusCode.OK).send(util.success(statusCode.OK, message.CREATE_USER_SUCCESS, data));
+        return res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_USER_SUCCESS, data));
     
     } catch(error) {
         console.log(error);
@@ -79,7 +79,7 @@ const findUserById = async(req: Request, res: Response) => {
  *  @desc Delete User
  *  @access Public
  */
-const deleteUser = async(req: Request, res: Response) => {
+const deleteUser = async(req: Request, res: Response): Promise<void> => {
     const { userId } = req.params;
 
     try{
