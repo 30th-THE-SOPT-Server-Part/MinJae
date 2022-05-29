@@ -1,11 +1,11 @@
 import express, { Request, Response } from "express";
 import { MovieCreateDto } from "../interfaces/movie/MovieCreateDto";
-import { MovieUpdateDto } from "../interfaces/movie/MovieUpdateDto";
 import statusCode from "../modules/statusCode";
 import message from "../modules/responseMessage";
 import util from "../modules/util";
 import MovieService from "../services/MovieService";
 import { MovieCommentCreateDto } from "../interfaces/movie/MovieCommentCreateDto";
+
 const { validationResult } = require('express-validator');
 
 /**
@@ -52,9 +52,26 @@ const createMovieComment = async( req: Request, res: Response) => {
     }
 }
 
+const getMovie = async (req: Request, res: Response) => {
+    const { movieId } = req.params;
+
+    try{
+    const data = await MovieService.getMovie(movieId);
+
+    if(!data) {
+        res.status(statusCode.NOT_FOUND).send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+    }
+    
+    res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_MOVIE_SUCCESS, data));
+    } catch (error) {
+        console.log(error);
+        res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
+    }
+}
 export default {
     createMovieInfo,
     createMovieComment,
+    getMovie
 }
 
 

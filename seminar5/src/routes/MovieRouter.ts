@@ -14,8 +14,7 @@ router.post('/:movieId/comment', [
     body('comment').notEmpty()
 ], MovieController.createMovieComment);
 
-router.get('/:movieId', MovieController.getMovieInfo);
-router.put('/:movieId', MovieController.updateMovieInfo);
-router.delete('/:movieId', MovieController.deleteMovieInfo);
+router.get('/:movieId', MovieController.getMovie);
+
 
 export default router;

@@ -1,6 +1,10 @@
-import mongoose from "mongoose";
-import { MovieCreateDto } from "./MovieCreateDto";
+import { MovieCommentInfo } from "./MovieInfo";
 
-export interface MovieResponseDto extends MovieCreateDto{
-    _id: mongoose.Schema.Types.ObjectId;
+export interface MovieResponseDto {
+    title: string;
+    director: string;
+    startDate?: Date;
+    thumbnail?: string;
+    story?: string;
+    comments?: MovieCommentInfo[];
 }

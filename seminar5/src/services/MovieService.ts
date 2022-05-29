@@ -3,7 +3,6 @@ import { MovieCommentCreateDto } from "../interfaces/movie/MovieCommentCreateDto
 import { MovieCreateDto } from "../interfaces/movie/MovieCreateDto";
 import { MovieCommentInfo, MovieInfo } from "../interfaces/movie/MovieInfo";
 import { MovieResponseDto } from "../interfaces/movie/MovieResponseDto";
-import { MovieUpdateDto } from "../interfaces/movie/MovieUpdateDto";
 import Movie from "../models/Movie";
 
 const createMovieInfo = async( movieCreateDto: MovieCreateDto): Promise<PostBaseReponseDto> => {
@@ -42,8 +41,19 @@ const createMovieComment = async ( movieId: string, movieCommentCreateDto: Movie
     }
 }
 
+const getMovie = async (movieId: string): Promise<MovieResponseDto | null> => {
+    try {
+        const movie = await Movie.findById(movieId).populate('comments.writer', 'name');
+        if (!movie) return null;
 
+        return movie;
+    } catch(error){
+        console.log(error);
+        throw error;
+    }
+}
 export default {
     createMovieInfo,
     createMovieComment,
+    getMovie
 }
