@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { body } from "express-validator";
 import { MovieController } from "../controllers";
+import auth from "../middleware/auth";
 
 const router: Router = Router();
 
@@ -15,6 +16,9 @@ router.post('/:movieId/comment', [
 ], MovieController.createMovieComment);
 
 router.get('/:movieId', MovieController.getMovie);
+router.put('/:movieId/comments/:commentId', [
+    body('comment').notEmpty()
+], auth, MovieController.updatedMovieComment);
 
 
 export default router;

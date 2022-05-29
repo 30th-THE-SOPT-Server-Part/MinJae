@@ -1,5 +1,6 @@
 import { PostBaseReponseDto } from "../interfaces/common/PostBaseResponseDto";
 import { MovieCommentCreateDto } from "../interfaces/movie/MovieCommentCreateDto";
+import { MovieCommentUpdateDto } from "../interfaces/movie/MovieCommentUpdateDto";
 import { MovieCreateDto } from "../interfaces/movie/MovieCreateDto";
 import { MovieCommentInfo, MovieInfo } from "../interfaces/movie/MovieInfo";
 import { MovieResponseDto } from "../interfaces/movie/MovieResponseDto";
@@ -52,8 +53,30 @@ const getMovie = async (movieId: string): Promise<MovieResponseDto | null> => {
         throw error;
     }
 }
+
+const updatedMovieComment = async (movieId: string, commentId: string, userId: string, commentUpdateDto: MovieCommentUpdateDto): Promise<MovieInfo | null> => {
+    try{
+        const movie = await Movie.findById(movieId);
+        if (!movie) return null;
+
+        const data = await Movie.findOneAndUpdate(
+            {_id: movieId, comments: {$elemMatch: {_id: commentId, writer: userId} } },
+            {
+                $set: {
+                    'comments.$.writer': userId,
+                    'comments.$.comment': commentUpdateDto.comment,
+                }
+            }, { new: true });
+    
+        return data;   
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
 export default {
     createMovieInfo,
     createMovieComment,
-    getMovie
+    getMovie,
+    updatedMovieComment
 }
