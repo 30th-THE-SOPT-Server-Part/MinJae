@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { FileResponseDto } from "../interfaces/file/FileResponseDto";
 import File from "../models/File";
 
-const creatFile = async (link: string, fileName: string): Promise<FileResponseDto> => {
+const createFile = async (link: string, fileName: string): Promise<FileResponseDto> => {
     try{
         const file = new File({
             link,
@@ -24,6 +24,30 @@ const creatFile = async (link: string, fileName: string): Promise<FileResponseDt
     }
 }
 
+const createFiles = async (imageList: { location: string, originalname: string }[]): Promise<FileResponseDto[]> => {
+    try{
+        const data = await Promise.all(imageList.map(async image => {
+            const file = new File({
+                link: image.location,
+                fileName: image.originalname
+            });
+            
+            await file.save();
+
+            return {
+                _id: file._id,
+                link: file.link
+            };
+        }));
+        
+        return data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
 export default {
-    creatFile,
+    createFile,
+    createFiles
 }
