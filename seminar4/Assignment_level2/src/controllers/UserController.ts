@@ -37,7 +37,12 @@ const createUser = async (req: Request, res: Response): Promise<void | Response>
  *  @desc Update User
  *  @access Public
  */
-const updateUser = async (req: Request, res: Response) : Promise<void> => {
+const updateUser = async (req: Request, res: Response) : Promise<void | Response> => {
+    const error = validationResult(req);
+    
+    if (!error.isEmpty()) {
+        return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+    }
     const userUpdateDto: UserUpdateDto = req.body;
     const { userId } = req.params;
     

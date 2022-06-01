@@ -9,10 +9,11 @@ router.post('/',[
     body('name').notEmpty(),
     body('phone').notEmpty(),
     body('email').isEmail(),
-
 ], UserController.createUser);
 
-router.put('/:userId', UserController.updateUser);
+router.put('/:userId', [
+    body('email').isEmail()
+],UserController.updateUser);
 router.get('/:userId', UserController.findUserById);
 router.delete('/:userId', UserController.deleteUser);
 

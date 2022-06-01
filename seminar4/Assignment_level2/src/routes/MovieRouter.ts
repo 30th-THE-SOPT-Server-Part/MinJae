@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { body } from "express-validator";
+import { body, check } from "express-validator";
 import { MovieController } from "../controllers";
 
 const router: Router = Router();
@@ -7,12 +7,15 @@ const router: Router = Router();
 router.post('/', [
     body('title').notEmpty(),
     body('director').notEmpty(),
-    body('startDate').notEmpty(),
+    check('startDate').isISO8601().toDate(),
     body('story').notEmpty()
 ], MovieController.createMovieInfo);
 
 router.get('/:movieId', MovieController.getMovieInfo);
-router.put('/:movieId', MovieController.updateMovieInfo);
+router.put('/:movieId', [
+    body('story').notEmpty(),
+    check('startDate').isISO8601().toDate()
+],MovieController.updateMovieInfo);
 router.delete('/:movieId', MovieController.deleteMovieInfo);
 
 export default router;
