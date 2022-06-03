@@ -123,7 +123,7 @@ const getMoviesBySearch = async (search: string, option: MovieOptionType, page: 
     }
 }
 
-const getTotalMovies = async (page: number) => {
+const getTotalMovies = async (page: number) : Promise<MoviesResponseDto> => {
     
     try{
 
