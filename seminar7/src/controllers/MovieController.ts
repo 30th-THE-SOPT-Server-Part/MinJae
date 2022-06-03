@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import { MovieCreateDto } from "../interfaces/movie/MovieCreateDto";
-import { MovieUpdateDto } from "../interfaces/movie/MovieUpdateDto";
 import statusCode from "../modules/statusCode";
 import message from "../modules/responseMessage";
 import util from "../modules/util";
@@ -53,6 +52,7 @@ const createMovieComment = async( req: Request, res: Response) => {
         res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
     }
 }
+
 const getMovie = async (req: Request, res: Response) => {
     const { movieId } = req.params;
 
@@ -99,27 +99,40 @@ const updatedMovieComment = async (req: Request, res: Response) => {
         res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));
     }
 }
+
 /**
  *  @route GET /movie?search=&option=
  *  @desc GET Movie By Search
  *  @access Public
  */
+
 const getMoviesBySearch = async (req: Request, res: Response) => {
     const { search , option } = req.query;
-
-    const isOptionType = (option: string): option is MovieOptionType => {
-        return ["title","director", "title_director"].indexOf(option) !== -1;
-    }
-    if (!isOptionType(option as string)) {
-        return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST,message.BAD_REQUEST));
-    }
-
     const page: number = Number(req.query.page || 1);
 
     try {
-        const data = await MovieService.getMoviesBySearch(search as string, option as MovieOptionType, page);
         
-        res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_MOVIE_SUCCESS, data));
+        if (search && option) {
+            const isOptionType = (option: string): option is MovieOptionType => {
+                return ["title","director", "title_director"].indexOf(option) !== -1;
+            }
+            if (!isOptionType(option as string)) {
+                return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST,message.BAD_REQUEST));
+            }
+
+            const data = await MovieService.getMoviesBySearch(search as string, option as MovieOptionType, page);
+
+            res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_MOVIE_SUCCESS, data));
+
+        } else if (!search && !option) {
+
+            const data = await MovieService.getTotalMovies(page);
+
+            res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_ALL_MOVIES_SUCCESS, data));
+        }
+       
+        
+        
     } catch (error) {
         console.log(error);
         res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, message.INTERNAL_SERVER_ERROR));

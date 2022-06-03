@@ -19,6 +19,7 @@ const message = {
 
     //영화 정보
     READ_MOVIE_SUCCESS: "영화 정보 조회 성공",
+    READ_ALL_MOVIES_SUCCESS: "영화 정보 전체 조회 성공",
     CREATE_MOVIE_SUCCESS: "영화 정보 생성 성공",
     UPDATE_MOVIE_SUCCESS: "영화 정보 수정 성공",
     DELETE_MOVIE_SUCCESS: "영화 정보 삭제 성공",
