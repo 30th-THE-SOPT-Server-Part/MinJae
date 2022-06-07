@@ -127,7 +127,7 @@ const getTotalMovies = async (page: number) : Promise<MoviesResponseDto> => {
     
     try{
 
-        const perPage: number = 3;
+        const perPage: number = 2;
         const movies: MovieResponseDto[] = await Movie.find()
                         .sort({ createdAt: -1 })
                         .skip(perPage * (page - 1))
