@@ -124,7 +124,7 @@ const getMoviesBySearch = async (req: Request, res: Response) => {
 
             res.status(statusCode.OK).send(util.success(statusCode.OK, message.READ_MOVIE_SUCCESS, data));
 
-        } else if (!search && !option) {
+        } else {
 
             const data = await MovieService.getTotalMovies(page);
 
